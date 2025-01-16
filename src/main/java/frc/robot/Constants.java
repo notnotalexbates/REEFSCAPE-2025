@@ -15,5 +15,9 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+
+    public static final double straightmax = .2;
+    public static final double strafemax = .2;
+    public static final double turnmax = .2;
   }
 }
