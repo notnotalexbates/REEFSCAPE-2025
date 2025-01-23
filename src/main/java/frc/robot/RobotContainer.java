@@ -23,9 +23,7 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private void configureBindings() {
-
-  
+  public void updateEncoderValues() {
     SmartDashboard.putNumber("endcoder1", m_armsubsystem.pos1());
     SmartDashboard.putNumber("endcoder2", m_armsubsystem.pos2());
     SmartDashboard.putNumber("velocity1", m_armsubsystem.vel1());
@@ -35,7 +33,9 @@ public class RobotContainer {
     SmartDashboard.putNumber("stag endcoder2", m_stagedarm.pos2());
     SmartDashboard.putNumber("stag vel1", m_stagedarm.vel1());
     SmartDashboard.putNumber("stag vel2", m_stagedarm.vel2());
+  }
 
+  private void configureBindings() {
     m_driverController.a().toggleOnTrue(m_armsubsystem.spin(3));
     m_driverController.b().toggleOnTrue(m_armsubsystem.spin(-3));
     m_driverController.a().toggleOnFalse(m_armsubsystem.spin(0));
