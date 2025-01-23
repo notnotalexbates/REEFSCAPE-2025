@@ -37,29 +37,11 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+
+  double motorspeed = 0.0;
+
   }
 
-  public void armUp(double speed) {
-    m_arm.setVoltage(speed);
-  }
-  
-  public void armDown(double speed) {
-    m_arm.setVoltage(-speed);
-  }
+ // double motor_angle = 
 
-  public double pos1(){
-    return encoder1.getPosition();
-  }
-
-  public double pos2(){
-    return encoder2.getPosition();
-  }
-  
-  public double vel1(){
-    return encoder1.getVelocity();
-  }
-  
-  public double vel2(){
-    return encoder2.getVelocity();
-  }
 }
