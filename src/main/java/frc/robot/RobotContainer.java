@@ -4,87 +4,50 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.StagedArmSubsystem;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in
- * the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of
- * the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
+  private final ArmSubsystem m_armsubsystem = new ArmSubsystem();
+  private final StagedArmSubsystem m_stagedarm = new StagedArmSubsystem();
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+  private final CommandXboxController m_driverController = new CommandXboxController(0);
+
   public RobotContainer() {
-    // Configure the trigger00 bindings
     configureBindings();
-
-    m_robotDrive.setDefaultCommand(
-        new RunCommand(() -> moveRobot(), m_robotDrive));
   }
 
-  void moveRobot() {
-    double threshold = 0.1;
-    double leftY = m_driverController.getLeftY() * OperatorConstants.straightmax;
-    double rightX = m_driverController.getRightX() * OperatorConstants.strafemax;
-    double leftX = m_driverController.getLeftX() * OperatorConstants.turnmax;
+  private void configureBindings() {}
 
-    if(leftY < threshold && leftY > -threshold){
-      leftY = 0;
-    }
-    if(leftX < threshold && leftX > -threshold){
-      leftX = 0;
-    }
-    if(rightX < threshold && rightX > -threshold){
-      rightX = 0;
-    }
+  public void runArm() {
+    SmartDashboard.putNumber("endcoder1", m_armsubsystem.pos1());
+    SmartDashboard.putNumber("endcoder2", m_armsubsystem.pos2());
+    SmartDashboard.putNumber("velocity1", m_armsubsystem.vel1());
+    SmartDashboard.putNumber("velocity2", m_armsubsystem.vel2());
 
-    m_robotDrive.drive(
-      leftY,
-      rightX,
-      leftX
-    );
-  }
+    SmartDashboard.putNumber("stag encoder1", m_stagedarm.pos1());
+    SmartDashboard.putNumber("stag endcoder2", m_stagedarm.pos2());
+    SmartDashboard.putNumber("stag vel1", m_stagedarm.vel1());
+    SmartDashboard.putNumber("stag vel2", m_stagedarm.vel2());
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
+    m_driverController.a().toggleOnTrue(m_armsubsystem.spin(3));
+    m_driverController.b().toggleOnTrue(m_armsubsystem.spin(-3));
+    m_driverController.a().toggleOnFalse(m_armsubsystem.spin(0));
+    m_driverController.b().toggleOnFalse(m_armsubsystem.spin(0));
+
+    m_driverController.a().toggleOnTrue(m_stagedarm.spin(1));
+    m_driverController.b().toggleOnTrue(m_stagedarm.spin(-1));
+    m_driverController.a().toggleOnFalse(m_stagedarm.spin(0));
+    m_driverController.b().toggleOnFalse(m_stagedarm.spin(0));
 
   }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 }
