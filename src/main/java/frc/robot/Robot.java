@@ -54,9 +54,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {
-   m_robotContainer.runArm();
-}
+  public void teleopPeriodic() {}
 
   @Override
   public void teleopExit() {}

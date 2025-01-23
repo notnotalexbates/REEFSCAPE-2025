@@ -23,9 +23,9 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
 
-  public void runArm() {
+  
     SmartDashboard.putNumber("endcoder1", m_armsubsystem.pos1());
     SmartDashboard.putNumber("endcoder2", m_armsubsystem.pos2());
     SmartDashboard.putNumber("velocity1", m_armsubsystem.vel1());
@@ -41,10 +41,10 @@ public class RobotContainer {
     m_driverController.a().toggleOnFalse(m_armsubsystem.spin(0));
     m_driverController.b().toggleOnFalse(m_armsubsystem.spin(0));
 
-    m_driverController.a().toggleOnTrue(m_stagedarm.spin(1));
-    m_driverController.b().toggleOnTrue(m_stagedarm.spin(-1));
-    m_driverController.a().toggleOnFalse(m_stagedarm.spin(0));
-    m_driverController.b().toggleOnFalse(m_stagedarm.spin(0));
+    m_driverController.x().toggleOnTrue(m_stagedarm.spin(1));
+    m_driverController.y().toggleOnTrue(m_stagedarm.spin(-1));
+    m_driverController.x().toggleOnFalse(m_stagedarm.spin(0));
+    m_driverController.y().toggleOnFalse(m_stagedarm.spin(0));
 
   }
   public Command getAutonomousCommand() {
