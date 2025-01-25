@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Encoder;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -23,13 +24,29 @@ public class ArmSubsystem extends SubsystemBase {
   private final SparkMax m_grip = new SparkMax(17, MotorType.kBrushless);
   private RelativeEncoder grip_encoder;
 
+  
+  private final SparkMax m_wrist = new SparkMax(18, MotorType.kBrushless);
+  private RelativeEncoder wrist_encoder1;
+  private RelativeEncoder wrist_encoder2;
+  private SparkMaxConfig wristConfig;
+
   private final SparkMaxConfig configarm = new SparkMaxConfig();
+  
+  private SparkClosedLoopController m_wrist_pidController;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public ArmSubsystem() {
     encoder1 = m_arm.getEncoder();
     encoder2 = m_arm.getAlternateEncoder();
     
     grip_encoder = m_grip.getEncoder();
+
+    wrist_encoder1 = m_wrist.getEncoder();
+    wrist_encoder2 = m_wrist.getAlternateEncoder();
+    m_wrist_pidController = m_wrist.getClosedLoopController();
+    wristConfig = new SparkMaxConfig();
+    wristConfig.encoder.positionConversionFactor(1);
+    wristConfig.encoder.velocityConversionFactor(1);
   }
 
 
@@ -76,5 +93,19 @@ public class ArmSubsystem extends SubsystemBase {
     m_grip.setVoltage(grip_speed);
   }
   
+  public double get_wrist_pos1(){
+    return wrist_encoder1.getPosition();
+  }
 
+  public double get_wrist_pos2(){
+    return wrist_encoder2.getPosition();
+  }
+
+  public void turn_wrist(double wrist_speed) {
+    m_wrist.setVoltage(wrist_speed);
+  }
+
+  public void turn_wrist_pos(double speed, double position) {
+    m_wrist.setVoltage(speed);
+  }
 }

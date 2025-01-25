@@ -62,7 +62,7 @@ public class RobotContainer {
     }
 
     m_robotDrive.drive(
-      leftY,
+      -leftY,
       rightX,
       leftX
     );
@@ -83,10 +83,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-     m_driverController.a().whileTrue(new GripperIntake(m_robotArm,9));
-     m_driverController.b().whileTrue(new GripperIntake(m_robotArm,-9));
-     m_driverController.x().whileTrue(new GripperIntake(m_robotArm,3));
-     m_driverController.y().whileTrue(new GripperIntake(m_robotArm,-3));
+     m_driverController.a().whileTrue(new GripperIntake(m_robotArm,7));
+     m_driverController.b().whileTrue(new GripperIntake(m_robotArm,-4));
+     m_driverController.x().whileTrue(new GripperIntake(m_robotArm,9));
+     m_driverController.y().whileTrue(new GripperIntake(m_robotArm,-4));
   }
 
   /**
