@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.XboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ArmSubsystem m_robotArm = new ArmSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
@@ -79,7 +80,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    new JoystickButton(m_driverController,Button.kA.value).onTrue(new m_robotArm.grip_out(3));
+    new JoystickButton(m_driverController,Button.kB.value).onTrue(new m_robotArm.grip_in(3));
   }
 
   /**

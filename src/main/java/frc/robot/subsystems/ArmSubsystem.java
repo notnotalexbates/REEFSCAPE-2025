@@ -18,13 +18,18 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 public class ArmSubsystem extends SubsystemBase {
   private final SparkMax m_arm = new SparkMax(10, MotorType.kBrushless);
   private RelativeEncoder encoder1;
-  private RelativeEncoder encoder2; 
+  private RelativeEncoder encoder2;
+
+  private final SparkMax m_grip = new SparkMax(17, MotorType.kBrushless);
+  private RelativeEncoder grip_encoder;
 
   private final SparkMaxConfig configarm = new SparkMaxConfig();
 
   public ArmSubsystem() {
     encoder1 = m_arm.getEncoder();
-    encoder2 = m_arm.getAlternateEncoder(); 
+    encoder2 = m_arm.getAlternateEncoder();
+    
+    grip_encoder = m_grip.getEncoder();
   }
 
 
@@ -61,5 +66,17 @@ public class ArmSubsystem extends SubsystemBase {
   
   public double vel2(){
     return encoder2.getVelocity();
+  }
+
+  public double grip_vel(){
+    return grip_encoder.getVelocity();
+  }
+
+  public void grip_out(double grip_speed) {
+    m_grip.setVoltage(grip_speed);
+  }
+  
+  public void grip_in(double grip_speed) {
+    m_grip.setVoltage(-grip_speed);
   }
 }
