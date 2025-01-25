@@ -72,11 +72,9 @@ public class ArmSubsystem extends SubsystemBase {
     return grip_encoder.getVelocity();
   }
 
-  public void grip_out(double grip_speed) {
+  public void grip(double grip_speed) {
     m_grip.setVoltage(grip_speed);
   }
   
-  public void grip_in(double grip_speed) {
-    m_grip.setVoltage(-grip_speed);
-  }
+
 }
