@@ -7,12 +7,15 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeMotor;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -26,9 +29,10 @@ import edu.wpi.first.wpilibj.XboxController;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ArmSubsystem m_robotArm = new ArmSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -79,7 +83,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    m_driverController.a().whileTrue(new IntakeMotor(m_robotArm,.5));
+    m_driverController.b().whileTrue(new IntakeMotor(m_robotArm,-.5));
+    SmartDashboard.putNumber("motor speed", m_robotArm.get_speed());
   }
 
   /**

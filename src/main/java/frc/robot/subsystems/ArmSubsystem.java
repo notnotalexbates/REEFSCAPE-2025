@@ -9,6 +9,7 @@ import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.GenericHID;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
@@ -16,7 +17,8 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ArmSubsystem extends SubsystemBase {
-  private final SparkMax m_arm = new SparkMax(10, MotorType.kBrushless);
+  
+  private final SparkMax m_arm = new SparkMax(17, MotorType.kBrushless);
   private RelativeEncoder encoder1;
   private RelativeEncoder encoder2; 
 
@@ -38,10 +40,14 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
 
-  double motorspeed = 0.0;
-
   }
 
- // double motor_angle = 
+  public void setMotorSpeed(double speed) {
+    m_arm.set(speed); // speed is a value between -1 and 1
+  }
+
+  public double get_speed(){
+    return encoder1.getVelocity();
+  }
 
 }
