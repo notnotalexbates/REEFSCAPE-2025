@@ -83,8 +83,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().whileTrue(new IntakeMotor(m_robotArm,.5));
-    m_driverController.b().whileTrue(new IntakeMotor(m_robotArm,-.5));
+    m_driverController.a().whileTrue(new IntakeMotor(m_robotArm,1));
+    m_driverController.b().whileTrue(new IntakeMotor(m_robotArm,-1));
     SmartDashboard.putNumber("motor speed", m_robotArm.get_speed());
   }
 
