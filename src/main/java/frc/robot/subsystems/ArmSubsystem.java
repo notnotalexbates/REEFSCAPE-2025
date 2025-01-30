@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
@@ -18,7 +19,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ArmSubsystem extends SubsystemBase {
   
-  private final SparkMax m_arm = new SparkMax(16, MotorType.kBrushless);
+  src/main/java/frc/robot/commands/IntakeMotor.java
   private RelativeEncoder encoder1;
   private RelativeEncoder encoder2; 
 
@@ -34,6 +35,9 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("motor speed", get_speed());
+    SmartDashboard.putNumber("motor position", get_Position());
   }
 
   @Override
@@ -48,6 +52,10 @@ public class ArmSubsystem extends SubsystemBase {
 
   public double get_speed(){
     return encoder1.getVelocity();
+  }
+
+  public double get_Position(){
+    return encoder2.getPosition();
   }
 
 }

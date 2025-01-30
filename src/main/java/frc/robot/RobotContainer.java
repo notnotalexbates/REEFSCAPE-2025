@@ -83,10 +83,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.a().whileTrue(new IntakeMotor(m_robotArm,1));
-    m_driverController.b().whileTrue(new IntakeMotor(m_robotArm,-1));
-    SmartDashboard.putNumber("motor speed", m_robotArm.get_speed());
+    m_driverController.a().whileTrue(new IntakeMotor(m_robotArm,0.1));
+    m_driverController.b().whileTrue(new IntakeMotor(m_robotArm,-0.1));
   }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
