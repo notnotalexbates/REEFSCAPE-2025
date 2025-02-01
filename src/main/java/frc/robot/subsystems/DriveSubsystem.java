@@ -25,8 +25,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxConfig configRR = new SparkMaxConfig();
   edu.wpi.first.wpilibj.drive.MecanumDrive m_drive;
  
-  
-
   public DriveSubsystem() {
     configFR.inverted(true);
     configRR.inverted(true);
