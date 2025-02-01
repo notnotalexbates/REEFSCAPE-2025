@@ -48,9 +48,9 @@ public class MoveRobot extends Command {
     strafe = controller.getRightX();
     turn = controller.getLeftX();
 
-    Y = straight * OperatorConstants.straightmax;
-    X = strafe * OperatorConstants.strafemax;
-    R = turn * OperatorConstants.turnmax;
+    Y = Math.pow(straight, 3) * OperatorConstants.straightmax;
+    X = Math.pow(strafe, 3) * OperatorConstants.strafemax;
+    R = Math.pow(turn, 3) * OperatorConstants.turnmax;
 
     if(Y < threshold && Y > -threshold){
       Y = 0;
@@ -62,7 +62,7 @@ public class MoveRobot extends Command {
       R = 0;
     }
 
-    m_subsystem.drive(-Y, X, R);
+    m_subsystem.drive(-Y, R, X);
   }
 
   // Called once the command ends or is interrupted.
