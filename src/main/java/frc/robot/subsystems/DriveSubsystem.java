@@ -1,12 +1,6 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import com.revrobotics.spark.SparkMax;
@@ -23,10 +17,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMaxConfig configRL = new SparkMaxConfig();
   private final SparkMaxConfig configFR = new SparkMaxConfig();
   private final SparkMaxConfig configRR = new SparkMaxConfig();
-  edu.wpi.first.wpilibj.drive.MecanumDrive m_drive;
+  MecanumDrive m_drive;
  
-  
-
   public DriveSubsystem() {
     configFR.inverted(true);
     configRR.inverted(true);
@@ -41,8 +33,6 @@ public class DriveSubsystem extends SubsystemBase {
     SendableRegistry.addChild(m_drive, m_frontRight);
     SendableRegistry.addChild(m_drive, m_rearRight);
   }
-
-
 
   @Override
   public void periodic() {

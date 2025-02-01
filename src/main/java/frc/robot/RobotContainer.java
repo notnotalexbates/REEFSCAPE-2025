@@ -5,14 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GripperIntake;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -40,32 +37,6 @@ public class RobotContainer {
     // Configure the trigger00 bindings
     configureBindings();
     System.out.print("something");
-
-    m_robotDrive.setDefaultCommand(
-        new RunCommand(() -> moveRobot(), m_robotDrive));
-  }
-
-  void moveRobot() {
-    double threshold = 0.1;
-    double leftY = m_driverController.getLeftY() * OperatorConstants.straightmax;
-    double rightX = m_driverController.getRightX() * OperatorConstants.strafemax;
-    double leftX = m_driverController.getLeftX() * OperatorConstants.turnmax;
-
-    if(leftY < threshold && leftY > -threshold){
-      leftY = 0;
-    }
-    if(leftX < threshold && leftX > -threshold){
-      leftX = 0;
-    }
-    if(rightX < threshold && rightX > -threshold){
-      rightX = 0;
-    }
-
-    m_robotDrive.drive(
-      -leftY,
-      rightX,
-      leftX
-    );
   }
 
   /**
@@ -83,15 +54,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-     m_driverController.a().whileTrue(new GripperIntake(m_robotArm,7));
-     m_driverController.b().whileTrue(new GripperIntake(m_robotArm,-4));
-     m_driverController.x().whileTrue(new GripperIntake(m_robotArm,9));
-     m_driverController.y().whileTrue(new GripperIntake(m_robotArm,-4));
+    m_driverController.a().whileTrue(new GripperIntake(m_robotArm,7));
+    m_driverController.b().whileTrue(new GripperIntake(m_robotArm,-4));
+    m_driverController.x().whileTrue(new GripperIntake(m_robotArm,9));
+    m_driverController.y().whileTrue(new GripperIntake(m_robotArm,-4));
+
+    double controllerThreshold = 0.1;
+    DoubleSupplier leftY = () -> -applyDeadband(m_driverController.getLeftY() * OperatorConstants.straightmax, controllerThreshold);
+    DoubleSupplier rightX = () -> applyDeadband(m_driverController.getRightX() * OperatorConstants.strafemax, controllerThreshold);
+    DoubleSupplier leftX = () -> applyDeadband(m_driverController.getLeftX() * OperatorConstants.turnmax, controllerThreshold);
+
+    m_robotDrive.setDefaultCommand(new DriveCommand(m_robotDrive, leftY, rightX, leftX));
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
+  private static double applyDeadband(double input, double threshold) {
+    return Math.abs(input) < threshold ? 0 : input;
+  }
 }
