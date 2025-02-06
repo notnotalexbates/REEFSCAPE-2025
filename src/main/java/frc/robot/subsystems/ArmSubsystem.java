@@ -24,10 +24,14 @@ public class ArmSubsystem extends SubsystemBase {
   private final SparkMax m_grip = new SparkMax(17, MotorType.kBrushless);
   private RelativeEncoder grip_encoder;
   
-  private final SparkMax m_wrist = new SparkMax(18, MotorType.kBrushless);
+  private final SparkMax m_wrist = new SparkMax(15, MotorType.kBrushless);
   private RelativeEncoder wrist_encoder1;
   private RelativeEncoder wrist_encoder2;
+  private final SparkMax m_staged = new SparkMax(14, MotorType.kBrushless);
+  private RelativeEncoder staged_encoder1;
+  private RelativeEncoder staged_encoder2;
   private SparkMaxConfig wristConfig;
+  
 
   private final SparkMaxConfig configarm = new SparkMaxConfig();
   
@@ -46,6 +50,8 @@ public class ArmSubsystem extends SubsystemBase {
     wristConfig = new SparkMaxConfig();
     wristConfig.encoder.positionConversionFactor(1);
     wristConfig.encoder.velocityConversionFactor(1);
+    staged_encoder1 = m_staged.getEncoder();
+    staged_encoder2 = m_staged.getAlternateEncoder();
   }
 
 
@@ -99,6 +105,12 @@ public class ArmSubsystem extends SubsystemBase {
   public double get_wrist_pos2(){
     return wrist_encoder2.getPosition();
   }
+  public double get_pitch_encoder1(){
+    return staged_encoder1.getPosition();
+  }
+  public double get_pitch_encoder2(){
+    return staged_encoder2.getPosition();
+  }
 
   public void turn_wrist(double wrist_speed) {
     m_wrist.setVoltage(wrist_speed);
@@ -106,5 +118,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void turn_wrist_pos(double speed, double position) {
     m_wrist.setVoltage(speed);
+  }
+  public void staged_pitch(double staged_speed) {
+    m_staged.setVoltage(staged_speed);
   }
 }
