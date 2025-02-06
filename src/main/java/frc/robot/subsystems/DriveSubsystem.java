@@ -13,8 +13,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMax m_frontRight = new SparkMax(13, MotorType.kBrushless);
   private final SparkMax m_rearRight = new SparkMax(14, MotorType.kBrushless);
 
-  private final SparkMaxConfig configFL = new SparkMaxConfig();
-  private final SparkMaxConfig configRL = new SparkMaxConfig();
   private final SparkMaxConfig configFR = new SparkMaxConfig();
   private final SparkMaxConfig configRR = new SparkMaxConfig();
   MecanumDrive m_drive;

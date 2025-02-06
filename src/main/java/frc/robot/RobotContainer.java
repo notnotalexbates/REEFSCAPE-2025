@@ -68,6 +68,9 @@ public class RobotContainer {
   }
 
   private static double applyDeadband(double input, double threshold) {
-    return Math.abs(input) < threshold ? 0 : input;
+    if (Math.abs(input) < threshold) { // i.e., -threshold < input < threshold 
+      return 0;
+    }
+    return input;
   }
 }

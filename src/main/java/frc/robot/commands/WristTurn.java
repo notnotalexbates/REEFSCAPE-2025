@@ -12,7 +12,6 @@ public class WristTurn extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ArmSubsystem m_subsystem;
   private double vel;
-  private double target_pos;
 
   /**
    * Creates a new ExampleCommand.
@@ -22,7 +21,6 @@ public class WristTurn extends Command {
   public WristTurn(ArmSubsystem subsystem, double velocity, double position) {
     m_subsystem = subsystem;
     vel=velocity;
-    target_pos = position;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);

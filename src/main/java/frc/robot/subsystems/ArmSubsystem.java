@@ -1,18 +1,9 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Encoder;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
@@ -30,9 +21,6 @@ public class ArmSubsystem extends SubsystemBase {
   private RelativeEncoder wrist_encoder2;
   private SparkMaxConfig wristConfig;
 
-  private final SparkMaxConfig configarm = new SparkMaxConfig();
-  
-  private SparkClosedLoopController m_wrist_pidController;
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public ArmSubsystem() {
@@ -43,7 +31,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     wrist_encoder1 = m_wrist.getEncoder();
     wrist_encoder2 = m_wrist.getAlternateEncoder();
-    m_wrist_pidController = m_wrist.getClosedLoopController();
     wristConfig = new SparkMaxConfig();
     wristConfig.encoder.positionConversionFactor(1);
     wristConfig.encoder.velocityConversionFactor(1);
