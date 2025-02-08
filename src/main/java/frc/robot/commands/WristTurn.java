@@ -5,12 +5,13 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class WristTurn extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_subsystem;
+  private final Claw m_subsystem;
   private double vel;
   private double target_pos;
   private double curr_pos;
@@ -21,7 +22,7 @@ public class WristTurn extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public WristTurn(ArmSubsystem subsystem, double velocity, double position) {
+  public WristTurn(Claw subsystem, double velocity, double position) {
     m_subsystem = subsystem;
     vel=velocity;
     target_pos = position;
@@ -46,10 +47,10 @@ public class WristTurn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.grip(direction * vel);
+    m_subsystem.turn_wrist(direction * vel);
     curr_pos = m_subsystem.get_wrist_pos2();
     if (Math.abs(curr_pos - target_pos) <= 0.01){
-      m_subsystem.staged_pitch(0);
+      m_subsystem.turn_wrist(0);
 
     }
   }
@@ -58,7 +59,7 @@ public class WristTurn extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.grip(0);
+    m_subsystem.turn_wrist(0);
   }
 
   // Returns true when the command should end.

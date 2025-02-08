@@ -5,12 +5,13 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.Claw;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
 public class GripperIntake extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_subsystem;
+  private final Claw m_subsystem;
   private double vel;
 
   /**
@@ -18,7 +19,7 @@ public class GripperIntake extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public GripperIntake(ArmSubsystem subsystem, double velocity) {
+  public GripperIntake(Claw subsystem, double velocity) {
     m_subsystem = subsystem;
     vel=velocity;
 
