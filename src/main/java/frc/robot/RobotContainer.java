@@ -6,14 +6,17 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Climb;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.GripperIntake;
 import frc.robot.commands.MoveRobot;
 import frc.robot.commands.StagedPitch;
+import frc.robot.commands.Telescope;
 import frc.robot.commands.WristTurn;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,7 +39,14 @@ public class RobotContainer {
   private final Claw m_claw = new Claw();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController = new CommandXboxController(0);
+  private final CommandXboxController m_SubdriverController = new CommandXboxController(0);
+  private final CommandXboxController m_driverController = new CommandXboxController(1);
+  private double intake_speed;
+  private double output_speed;
+  private double wrist_speed;
+  private double pitch_speed;
+  private double telescope_speed;
+  private double climb_speed;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -52,28 +62,44 @@ public class RobotContainer {
 
   /* This moveRobot() function was moved to the MoveRobot.java command script. */
 
-  // void moveRobot() {
-  //   double threshold = 0.1;
-  //   double leftY = m_driverController.getLeftY() * OperatorConstants.straightmax;
-  //   double rightX = m_driverController.getRightX() * OperatorConstants.strafemax;
-  //   double leftX = m_driverController.getLeftX() * OperatorConstants.turnmax;
+  void moveRobot() {
+    double threshold = 0.1;
+    double leftY = m_driverController.getLeftY() * OperatorConstants.straightmax;
+    double rightX = m_driverController.getRightX() * OperatorConstants.strafemax;
+    double leftX = m_driverController.getLeftX() * OperatorConstants.turnmax;
 
-  //   if(leftY < threshold && leftY > -threshold){
-  //     leftY = 0;
-  //   }
-  //   if(leftX < threshold && leftX > -threshold){
-  //     leftX = 0;
-  //   }
-  //   if(rightX < threshold && rightX > -threshold){
-  //     rightX = 0;
-  //   }
+    if(leftY < threshold && leftY > -threshold){
+      leftY = 0;
+    }
+    if(leftX < threshold && leftX > -threshold){
+      leftX = 0;
+    }
+    if(rightX < threshold && rightX > -threshold){
+      rightX = 0;
+    }
 
-  //   m_robotDrive.drive(
-  //     -leftY,
-  //     rightX,
-  //     leftX
-  //   );
-  // }
+    m_robotDrive.drive(
+      -leftY,
+      rightX,
+      leftX
+    );
+  }
+  public void SmartDashboardValues() {
+    pitch_speed = SmartDashboard.getNumber("Pitch Speed", 1);
+    wrist_speed = SmartDashboard.getNumber("Wrist Speed", 1);
+    intake_speed = SmartDashboard.getNumber("Intake Speed", 1);
+    output_speed = SmartDashboard.getNumber("Output Speed", 1);
+    climb_speed = SmartDashboard.getNumber("Climb Speed", 1);
+    telescope_speed = SmartDashboard.getNumber("Stage Speed", 1);
+    SmartDashboard.putNumber("Climb Motor Encoder", m_robotArm.get_climb_encoder1());
+    SmartDashboard.putNumber("Climb Alt Encoder", m_robotArm.get_climb_encoder2());
+    SmartDashboard.putNumber("Pitch Motor Encoder", m_robotArm.get_pitch_encoder1());
+    SmartDashboard.putNumber("Pitch Alt Encoder", m_robotArm.get_pitch_encoder2());
+    SmartDashboard.putNumber("Wrist Motor Encoder", m_robotArm.get_wrist_encoder1());
+    SmartDashboard.putNumber("Wrist Alt Encoder", m_robotArm.get_wrist_encoder2());
+
+  }
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be
@@ -90,13 +116,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-     m_driverController.a().toggleOnTrue(new StagedPitch(m_robotArm,1,0));
-     m_driverController.b().toggleOnTrue(new StagedPitch(m_robotArm,1,0.88));
-     m_driverController.x().toggleOnTrue(new StagedPitch(m_robotArm,1,0.63));
-     m_driverController.leftBumper().whileTrue(new WristTurn(m_claw,4, 0));
-     m_driverController.rightBumper().whileTrue(new WristTurn(m_claw,4, 0.75));
-     m_driverController.rightTrigger().whileTrue(new GripperIntake(m_claw,4));
-     m_driverController.leftTrigger().whileTrue(new GripperIntake(m_claw,-4));
+     m_SubdriverController.a().toggleOnTrue(new StagedPitch(m_robotArm,1,0));
+     m_SubdriverController.b().toggleOnTrue(new StagedPitch(m_robotArm,1,0.88));
+     m_SubdriverController.x().toggleOnTrue(new StagedPitch(m_robotArm,1,0.63));
+     m_SubdriverController.leftBumper().whileTrue(new WristTurn(m_claw,4, 0));
+     m_SubdriverController.rightBumper().whileTrue(new WristTurn(m_claw,4, 0.75));
+     m_SubdriverController.rightTrigger().whileTrue(new GripperIntake(m_claw,4));
+     m_SubdriverController.leftTrigger().whileTrue(new GripperIntake(m_claw,-4));
+     m_SubdriverController.rightTrigger().whileTrue(new Climb(m_robotArm,4));
+     m_SubdriverController.leftTrigger().whileTrue(new Telescope(m_robotArm,-4));
   }
 
   /**

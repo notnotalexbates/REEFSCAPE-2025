@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -13,19 +14,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Claw extends SubsystemBase {
-  private final SparkMax m_grip = new SparkMax(17, MotorType.kBrushless);
+  private final SparkMax m_grip = new SparkMax(18, MotorType.kBrushless);
   private RelativeEncoder grip_encoder;
   
-  private final SparkMax m_wrist = new SparkMax(15, MotorType.kBrushless);
+  private final SparkMax m_wrist = new SparkMax(17, MotorType.kBrushless);
   private RelativeEncoder wrist_encoder1;
-  private RelativeEncoder wrist_encoder2;
+  private AbsoluteEncoder wrist_encoder2;
   
   /** Creates a new ExampleSubsystem. */
   public Claw() {
     grip_encoder = m_grip.getEncoder();
 
     wrist_encoder1 = m_wrist.getEncoder();
-    wrist_encoder2 = m_wrist.getAlternateEncoder();
+    wrist_encoder2 = m_wrist.getAbsoluteEncoder();
   }
 
 
@@ -59,11 +60,11 @@ public class Claw extends SubsystemBase {
     m_grip.setVoltage(grip_speed);
   }
   
-  public double get_wrist_pos1(){
+  public double get_wrist_encoder1(){
     return wrist_encoder1.getPosition();
   }
 
-  public double get_wrist_pos2(){
+  public double get_wrist_encoder2(){
     return wrist_encoder2.getPosition();
   }
 

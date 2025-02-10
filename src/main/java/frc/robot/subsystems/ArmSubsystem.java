@@ -17,14 +17,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class ArmSubsystem extends SubsystemBase {
-  private final SparkMax m_arm = new SparkMax(10, MotorType.kBrushless);
-  private RelativeEncoder encoder1;
-  private RelativeEncoder encoder2;
-
-  
+  private final SparkMax m_climb = new SparkMax(15, MotorType.kBrushless);
+  private RelativeEncoder climb_encoder1;
+  private AbsoluteEncoder climb_encoder2;
   private final SparkMax m_staged = new SparkMax(16, MotorType.kBrushless);
   private RelativeEncoder staged_encoder1;
   private RelativeEncoder staged_encoder2;
+  
+  private final SparkMax m_tele = new SparkMax(19, MotorType.kBrushless);
   private SparkMaxConfig wristConfig;
   
 
@@ -34,16 +34,17 @@ public class ArmSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public ArmSubsystem() {
-    encoder1 = m_arm.getEncoder();            // motor encoder
-    encoder2 = m_arm.getAlternateEncoder();   // secondary encoder
+    climb_encoder2 = m_climb.getEncoder();
+    climb_encoder1 = m_climb.getAlternateEncoder();
+    staged_encoder1 = m_staged.getEncoder();
+    staged_encoder2 = m_staged.getAlternateEncoder();
     
     
    // m_wrist_pidController = m_wrist.getClosedLoopController();
     wristConfig = new SparkMaxConfig();
     wristConfig.encoder.positionConversionFactor(1);
     wristConfig.encoder.velocityConversionFactor(1);
-    staged_encoder1 = m_staged.getEncoder();
-    staged_encoder2 = m_staged.getAlternateEncoder();
+   
   }
 
 
@@ -58,30 +59,6 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void armUp(double speed) {
-    m_arm.setVoltage(speed);
-  }
-  
-  public void armDown(double speed) {
-    m_arm.setVoltage(-speed);
-  }
-
-  public double pos1(){
-    return encoder1.getPosition();
-  }
-
-  public double pos2(){
-    return encoder2.getPosition();
-  }
-  
-  public double vel1(){
-    return encoder1.getVelocity();
-  }
-  
-  public double vel2(){
-    return encoder2.getVelocity();
-  }
-
   public double get_pitch_encoder1(){
     return staged_encoder1.getPosition();
   }
@@ -91,5 +68,17 @@ public class ArmSubsystem extends SubsystemBase {
   }
   public void staged_pitch(double staged_speed) {
     m_staged.setVoltage(staged_speed);
+  }
+  public double get_climb_encoder1(){
+    return climb_encoder1.getPosition();
+  }
+  public double get_climb_encoder2(){
+    return climb_encoder2.getPosition();
+  }
+  public void climb(double climb_speed) {
+    m_climb.setVoltage(climb_speed);
+  }
+  public void telescope(double telescope_speed) {
+    m_tele.setVoltage(telescope_speed);
   }
 }
