@@ -26,6 +26,7 @@ public class WristTurn extends Command {
     m_subsystem = subsystem;
     vel=velocity;
     target_pos = position;
+    
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -34,6 +35,7 @@ public class WristTurn extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    curr_pos = m_subsystem.get_wrist_encoder2();
     if (target_pos > curr_pos){
       direction = -1;
       
@@ -48,7 +50,7 @@ public class WristTurn extends Command {
   @Override
   public void execute() {
     m_subsystem.turn_wrist(direction * vel);
-    curr_pos = m_subsystem.get_wrist_pos2();
+    curr_pos = m_subsystem.get_wrist_encoder2();
     if (Math.abs(curr_pos - target_pos) <= 0.01){
       m_subsystem.turn_wrist(0);
 

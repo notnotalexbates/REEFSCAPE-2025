@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Encoder;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -22,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
   private AbsoluteEncoder climb_encoder2;
   private final SparkMax m_staged = new SparkMax(16, MotorType.kBrushless);
   private RelativeEncoder staged_encoder1;
-  private RelativeEncoder staged_encoder2;
+  private AbsoluteEncoder staged_encoder2;
   
   private final SparkMax m_tele = new SparkMax(19, MotorType.kBrushless);
   private SparkMaxConfig wristConfig;
@@ -34,10 +35,10 @@ public class ArmSubsystem extends SubsystemBase {
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   public ArmSubsystem() {
-    climb_encoder2 = m_climb.getEncoder();
-    climb_encoder1 = m_climb.getAlternateEncoder();
+    climb_encoder2 = m_climb.getAbsoluteEncoder();
+    climb_encoder1 = m_climb.getEncoder();
     staged_encoder1 = m_staged.getEncoder();
-    staged_encoder2 = m_staged.getAlternateEncoder();
+    staged_encoder2 = m_staged.getAbsoluteEncoder();
     
     
    // m_wrist_pidController = m_wrist.getClosedLoopController();

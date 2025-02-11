@@ -34,6 +34,7 @@ public class StagedPitch extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    curr_pos = m_subsystem.get_pitch_encoder2();
     if (targ_position > curr_pos){
       direction = -1;
       

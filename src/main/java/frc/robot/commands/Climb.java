@@ -45,7 +45,7 @@ public class Climb extends Command{
     return false;
   }
   // Please commit
-  public void Plz() {
+  private void Plz() {
     
   }
 }
