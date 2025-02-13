@@ -36,25 +36,25 @@ public class WristTurn extends Command {
   @Override
   public void initialize() {
     curr_pos = m_subsystem.get_wrist_encoder2();
-    if (target_pos > curr_pos){
-      direction = -1;
+  //   if (target_pos > curr_pos){
+  //     direction = -1;
       
-    }
-    else if (curr_pos > target_pos){
-      direction = 1;
-    }
-  }
+  //   }
+  //   else if (curr_pos > target_pos){
+  //     direction = 1;
+  //   }
+   }
 
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.turn_wrist(direction * vel);
+    m_subsystem.turn_wrist(vel);
     curr_pos = m_subsystem.get_wrist_encoder2();
-    if (Math.abs(curr_pos - target_pos) <= 0.01){
-      m_subsystem.turn_wrist(0);
+    // if (Math.abs(curr_pos - target_pos) <= 0.01){
+    //   m_subsystem.turn_wrist(0);
 
-    }
+    // }
   }
     
 
