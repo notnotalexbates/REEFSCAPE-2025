@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AutoDrive;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Climb;
 import frc.robot.commands.ExampleCommand;
@@ -58,6 +59,12 @@ public class RobotContainer {
 
     m_robotDrive.setDefaultCommand(
         new MoveRobot(m_robotDrive, m_driverController));
+    SmartDashboard.putNumber("Pitch Speed", 1);
+    SmartDashboard.putNumber("Wrist Speed", 1);
+    SmartDashboard.putNumber("Intake Speed", 1);
+    SmartDashboard.putNumber("Output Speed", 1);
+    SmartDashboard.putNumber("Climb Speed", 1);
+    SmartDashboard.putNumber("Stage Speed", 1);
   }
 
   /* This moveRobot() function was moved to the MoveRobot.java command script. */
@@ -116,21 +123,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-     m_SubdriverController.a().whileTrue(new StagedPitch(m_robotArm,pitch_speed,0));
-     m_SubdriverController.b().whileTrue(new StagedPitch(m_robotArm,pitch_speed,0.88));
-     m_SubdriverController.x().whileTrue(new StagedPitch(m_robotArm,pitch_speed,0.63));
+     m_SubdriverController.a().whileTrue(new StagedPitch(m_robotArm,3,0));
+     m_SubdriverController.b().whileTrue(new StagedPitch(m_robotArm,-3,0.88));
+    //  m_SubdriverController.x().whileTrue(new StagedPitch(m_robotArm,pitch_speed,0.63));
 
-     m_SubdriverController.leftBumper().whileTrue(new WristTurn(m_claw,wrist_speed, 0));
-     m_SubdriverController.rightBumper().whileTrue(new WristTurn(m_claw,wrist_speed, 0.75));
+     m_SubdriverController.leftBumper().whileTrue(new WristTurn(m_claw,1, 0));
+     m_SubdriverController.rightBumper().whileTrue(new WristTurn(m_claw,-1, 0.75));
 
-     m_SubdriverController.rightTrigger().whileTrue(new GripperIntake(m_claw,intake_speed));
-     m_SubdriverController.leftTrigger().whileTrue(new GripperIntake(m_claw,output_speed));
+     m_SubdriverController.rightTrigger().whileTrue(new GripperIntake(m_claw,-5));
+     m_SubdriverController.leftTrigger().whileTrue(new GripperIntake(m_claw,7));
 
-     m_SubdriverController.rightTrigger().whileTrue(new Climb(m_robotArm,climb_speed));
-     m_SubdriverController.rightTrigger().whileTrue(new Climb(m_robotArm,-1 * climb_speed));
+     m_SubdriverController.x().whileTrue(new Climb(m_robotArm,6));
+     m_SubdriverController.y().whileTrue(new Climb(m_robotArm,-1 * 6));
 
-     m_SubdriverController.rightStick().whileTrue(new Telescope(m_robotArm,telescope_speed));
-     m_SubdriverController.leftStick().whileTrue(new Telescope(m_robotArm,-1 * telescope_speed));
+     m_SubdriverController.rightStick().whileTrue(new Telescope(m_robotArm,0.5));
+     m_SubdriverController.leftStick().whileTrue(new Telescope(m_robotArm,-1 * 0.5));
   }
 
   /**
@@ -138,4 +145,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  Command autoCommand () {
+    return new AutoDrive(m_robotDrive, 2);
+  }
+  
 }
