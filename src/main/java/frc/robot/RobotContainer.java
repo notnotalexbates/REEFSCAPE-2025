@@ -136,8 +136,8 @@ public class RobotContainer {
      m_SubdriverController.x().whileTrue(new Climb(m_robotArm,6));
      m_SubdriverController.y().whileTrue(new Climb(m_robotArm,-1 * 6));
 
-     m_SubdriverController.rightStick().whileTrue(new Telescope(m_robotArm,0.5));
-     m_SubdriverController.leftStick().whileTrue(new Telescope(m_robotArm,-1 * 0.5));
+     m_SubdriverController.rightStick().whileTrue(new Telescope(m_robotArm,3));
+     m_SubdriverController.leftStick().whileTrue(new Telescope(m_robotArm,-1 * 3));
   }
 
   /**
